@@ -567,6 +567,8 @@ select { cursor: pointer; }
           <label class="stream-item"><input type="checkbox" name="streams" value="VAL2USE-AI"><div><div class="stream-name">VAL2USE-AI</div><div class="stream-title-text">Adoption pathways for AI as a medical device</div></div></label>
           <label class="stream-item"><input type="checkbox" name="streams" value="PEDIA-PASS"><div><div class="stream-name">PEDIA-PASS</div><div class="stream-title-text">Continuous surveillance, Fontan palliation</div></div></label>
         </div>
+        <div class="field-error" id="err-streams">Please select at least one stream.</div>
+      </div>
 
       <div class="field">
         <label class="field-label" for="top_choice">Top choice and motivation <span class="req">*</span></label>
@@ -804,11 +806,16 @@ function validateSection(n) {
     }
   });
 
-  // Streams (at least 1 checked)
+  // Streams (at least 1 checked, max 3)
   if (n === 4) {
-    const checked = sec.querySelectorAll('input[name=streams]:checked');
-    if (checked.length === 0) { showErr('err-streams'); valid = false; }
-    if (checked.length > 3) {
+    const allStreams = document.querySelectorAll('input[name=streams]:checked');
+    if (allStreams.length === 0) {
+      showErr('err-streams');
+      const errEl = document.getElementById('err-streams');
+      if (errEl) errEl.classList.add('show');
+      valid = false;
+    }
+    if (allStreams.length > 3) {
       alert('Please select a maximum of 3 research streams.');
       valid = false;
     }
